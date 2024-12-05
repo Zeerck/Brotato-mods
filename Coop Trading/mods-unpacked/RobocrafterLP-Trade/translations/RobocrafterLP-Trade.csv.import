@@ -1,0 +1,16 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+
+[deps]
+
+files=[ "res://mods-unpacked/RobocrafterLP-Trade/translations/RobocrafterLP-Trade.en.translation", "res://mods-unpacked/RobocrafterLP-Trade/translations/RobocrafterLP-Trade.ru.translation" ]
+
+source_file="res://mods-unpacked/RobocrafterLP-Trade/translations/RobocrafterLP-Trade.csv"
+dest_files=[ "res://mods-unpacked/RobocrafterLP-Trade/translations/RobocrafterLP-Trade.en.translation", "res://mods-unpacked/RobocrafterLP-Trade/translations/RobocrafterLP-Trade.ru.translation" ]
+
+[params]
+
+compress=true
+delimiter=0

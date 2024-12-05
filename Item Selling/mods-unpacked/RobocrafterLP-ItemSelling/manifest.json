@@ -1,0 +1,19 @@
+{
+	"name": "ItemSelling",
+	"namespace": "RobocrafterLP",
+	"version_number": "1.1.0",
+	"description": "Add The option to sell item in the shop phase",
+	"website_url": "",
+	"dependencies": [
+	],
+	"extra": {
+		"godot": {
+			"incompatibilities": [
+			],
+			"authors": ["RobocrafterLP"],
+			"compatible_mod_loader_version": ["3.0.0"],
+			"compatible_game_version": ["0.6.1.6"],
+			"config_defaults": {}
+		}
+	}
+}
