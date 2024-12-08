@@ -1,20 +1,31 @@
-
 {
 	"name": "Trade",
 	"namespace": "RobocrafterLP",
-	"version_number": "1.2.3",
-	"description": "Adding items and weapons trade (Original mod by: RobocrafterLP. Weapons trade by: Zeerck)",
+	"version_number": "1.2.4",
+	"description": "Adding items and weapons trade",
 	"website_url": "",
 	"dependencies": [
 	],
 	"extra": {
 		"godot": {
+			"optional_dependencies": ["dami-ModOptions"],
 			"incompatibilities": [
 			],
 			"authors": ["RobocrafterLP", "Zeerck"],
 			"compatible_mod_loader_version": ["3.0.0"],
 			"compatible_game_version": ["0.6.1.6"],
-			"config_defaults": {}
+			"config_defaults": {},
+			"config_schema": {
+				"title": "Config_coop_trading",
+				"description": "Config for coop trading",
+				"type": "object",
+				"properties": {
+					"TRADE_ITEMS_OVER_LIMIT": {
+						"type": "boolean",
+						"default": false
+					}
+				}
+			}
 		}
 	}
 }
