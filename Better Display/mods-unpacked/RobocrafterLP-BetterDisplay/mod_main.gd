@@ -21,6 +21,7 @@ func install_script_extensions() -> void:
 	ModLoaderMod.install_script_extension(extensions_dir_path.plus_file("ui/hud/ui_consumable_to_process_list.gd"))
 	ModLoaderMod.install_script_extension(extensions_dir_path.plus_file("ui/hud/ui_upgrade_to_process_list.gd"))
 	ModLoaderMod.install_script_extension(extensions_dir_path.plus_file("main.gd"))
+	ModLoaderMod.install_script_extension(extensions_dir_path.plus_file("singletons/item_service.gd"))
 
 
 func add_translations() -> void:

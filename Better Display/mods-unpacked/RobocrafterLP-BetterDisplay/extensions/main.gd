@@ -2,6 +2,9 @@ extends Main
 
 var _tardigrades: = [null, null, null, null]
 
+func round_to_dec(num, digit):
+    return round(num * pow(10.0, digit)) / pow(10.0, digit)
+
 func on_xp_added(current_xp: float, max_xp: float, player_index: int) -> void:
 	var player_ui: PlayerUIElements = _players_ui[player_index]
 	var display_xp = int(current_xp) % int(ceil(max_xp))
@@ -26,7 +29,20 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void:
 			player_ui.life_bar.get_parent().add_child(tardigrade)
 			player_ui.life_bar.get_parent().move_child(tardigrade, player_ui.gold.get_index())
 
+func _on_player_health_updated(player:Player, current_val:int, max_val:int)->void :
+	._on_player_health_updated(player, current_val, max_val)
+	var player_index = player.player_index
 
+	var player_ui:PlayerUIElements = _players_ui[player_index]
+	var life_label = player_ui.life_label
+	if int(player.current_stats.health) == int(player.max_stats.health):
+		life_label.text = str(max(player.current_stats.health, 0.0)) + " / " + str(player.max_stats.health)
+	else:
+		var stat_hp_regeneration = Utils.get_stat("stat_hp_regeneration", player_index)
+		var val = RunData.get_hp_regeneration_timer(stat_hp_regeneration)
+		var amount_per_sec = 1 / val
+		life_label.text = str(max(player.current_stats.health, 0.0)) + " / " + str(player.max_stats.health) + " | (" + str(stepify(amount_per_sec, 0.01)) + "HP/s)"
+	
 func _physics_process(_delta: float) -> void:
 	._physics_process(_delta)
 	for player_index in RunData.get_player_count():

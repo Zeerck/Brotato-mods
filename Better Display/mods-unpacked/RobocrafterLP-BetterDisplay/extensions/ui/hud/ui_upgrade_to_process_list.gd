@@ -2,6 +2,7 @@ extends UIUpgradeToProcessList
 
 onready var CustomLabel = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/count_label.tscn").instance()
 
+var dex_mode = false # for not errors
 func add_element(icon:Resource, level:int)->void :
     _elements.push_back(level)
     updatelist(icon, level)
@@ -19,6 +20,8 @@ func updatelist(icon:Resource, level:int)->void :
     if node == null:
         node = element_scene.instance()
         node.name = "Levelup"
+        if dex_mode: # here i need to be put setting check
+            icon = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/upgrade_icon.png")
         node.set_data(icon, level)
         var nodeSize = node.get_size()
         var label = CustomLabel.duplicate()
