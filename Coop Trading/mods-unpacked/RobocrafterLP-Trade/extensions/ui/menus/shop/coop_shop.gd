@@ -24,8 +24,10 @@ func _ready() -> void:
 		)
 		
 	var ModsConfigInterface = get_node("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
-	ModsConfigInterface.connect("setting_changed", self, "on_config_changed") # Replace with function body.
-	coop_trading_config = ModLoaderConfig.get_current_config(RobocrafterLP_Trade)
+
+	if ModsConfigInterface != null:
+		ModsConfigInterface.connect("setting_changed", self, "on_config_changed")
+		coop_trading_config = ModLoaderConfig.get_current_config(RobocrafterLP_Trade)
 
 func on_config_changed(setting_name:String, value, mod_name):
 	var config = ModLoaderConfig.get_current_config(RobocrafterLP_Trade)
