@@ -1,0 +1,16 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+
+[deps]
+
+files=[ "res://mods-unpacked/RobocrafterLP-BetterDisplay/translations/RobocrafterLP-BetterDisplay.en.translation", "res://mods-unpacked/RobocrafterLP-BetterDisplay/translations/RobocrafterLP-BetterDisplay.ru.translation" ]
+
+source_file="res://mods-unpacked/RobocrafterLP-BetterDisplay/translations/RobocrafterLP-BetterDisplay.csv"
+dest_files=[ "res://mods-unpacked/RobocrafterLP-BetterDisplay/translations/RobocrafterLP-BetterDisplay.en.translation", "res://mods-unpacked/RobocrafterLP-BetterDisplay/translations/RobocrafterLP-BetterDisplay.ru.translation" ]
+
+[params]
+
+compress=true
+delimiter=0
