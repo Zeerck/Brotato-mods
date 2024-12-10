@@ -1,14 +1,12 @@
 {
 	"name": "Trade",
 	"namespace": "RobocrafterLP",
-	"version_number": "1.2.4",
+	"version_number": "1.2.5",
 	"description": "Adding items and weapons trade",
 	"website_url": "",
-	"dependencies": [
-	],
+	"dependencies": ["dami-ModOptions"],
 	"extra": {
 		"godot": {
-			"optional_dependencies": ["dami-ModOptions"],
 			"incompatibilities": [
 			],
 			"authors": ["RobocrafterLP", "Zeerck"],
