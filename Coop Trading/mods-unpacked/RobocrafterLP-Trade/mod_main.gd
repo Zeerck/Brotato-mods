@@ -8,6 +8,8 @@ var mod_dir_path := ""
 var extensions_dir_path := ""
 var translations_dir_path := ""
 
+
+# Extended func's
 func _init() -> void:
 	mod_dir_path = ModLoaderMod.get_unpacked_dir().plus_file(RobocrafterLP_Trade_DIR)
 	# Add extensions
@@ -15,51 +17,17 @@ func _init() -> void:
 	# Add translations
 	add_translations()
 
-func _ready():
+func _ready() -> void:
 	ModLoaderLog.info("Ready!", RobocrafterLP_Trade_LOG_NAME)	
-	_config()
+	_config(RobocrafterLP_Trade_ID, RobocrafterLP_Trade_LOG_NAME)
 
-func _config()-> void: # Defaults for Mods Options
-	var data = ModLoaderStore.mod_data[RobocrafterLP_Trade_ID]
 
-	if data != null:
-		var version = data.manifest.version_number
-		ModLoaderLog.info("Current Version is %s." % version, RobocrafterLP_Trade_LOG_NAME)
-		var config = ModLoaderConfig.get_config(RobocrafterLP_Trade_ID, version)
-
-		if config == null:
-			var defaultConfig = ModLoaderConfig.get_default_config(RobocrafterLP_Trade_ID)
-			if defaultConfig != null:
-				config = ModLoaderConfig.create_config(RobocrafterLP_Trade_ID, version, defaultConfig.data)
-			else:
-				config = ModLoaderConfig.create_config(RobocrafterLP_Trade_ID, version, {})
-			
-		if config != null and ModLoaderConfig.get_current_config_name(RobocrafterLP_Trade_ID) != version:
-			ModLoaderConfig.set_current_config(config)
-			if config.is_valid():
-				config.save_to_file()
-				ModLoaderLog.info("Save config to : %s" % config.save_path, RobocrafterLP_Trade_LOG_NAME)
-	
-	var ModsConfigInterface = get_node("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
-
-	if ModsConfigInterface != null:
-		ModLoaderLog.info("Connect setting_changed", RobocrafterLP_Trade_LOG_NAME)
-		ModsConfigInterface.connect("setting_changed", self, "setting_changed")
-	else:
-		ModLoaderLog.info("ModsConfigInterface is null", RobocrafterLP_Trade_LOG_NAME)
-	
-	
-func setting_changed(setting_name, value, _mod_nammod_namee)->void:
-	var config = ModLoaderConfig.get_current_config(RobocrafterLP_Trade_ID)
-
-	if config != null:
-		config.data[setting_name] = value;
-		config.save_to_file()
-
+# Custom func's
 func install_script_extensions() -> void:
 	extensions_dir_path = mod_dir_path.plus_file("extensions")
 
 	var extensions = [
+		"singletons/run_data.gd",
 		"singletons/debug_service.gd",
 		"ui/menus/shop/coop_item_popup.gd"
 	]
@@ -79,3 +47,24 @@ func add_translations() -> void:
 
 	for translation in translations:
 		ModLoaderMod.add_translation(translations_dir_path.plus_file("RobocrafterLP-Trade.%s.translation" % translation))
+
+func _config(mod_id: String, mod_log: String)-> void: # Defaults for Mods Options
+	var data = ModLoaderStore.mod_data[mod_id]
+	
+	if data != null:
+		var version = data.manifest.version_number
+		ModLoaderLog.info("Current Version is %s." % version, mod_log)
+		var config = ModLoaderConfig.get_config(mod_id, version)
+	
+		if config == null:
+			var defaultConfig = ModLoaderConfig.get_default_config(mod_id)
+			if defaultConfig != null:
+				config = ModLoaderConfig.create_config(mod_id, version, defaultConfig.data)
+			else:
+				config = ModLoaderConfig.create_config(mod_id, version, {})
+			
+		if config != null and ModLoaderConfig.get_current_config_name(mod_id) != version:
+			ModLoaderConfig.set_current_config(config)
+			if config.is_valid():
+				config.save_to_file()
+				ModLoaderLog.info("Save config to : %s" % config.save_path, mod_log)

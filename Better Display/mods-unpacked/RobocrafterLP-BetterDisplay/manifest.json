@@ -1,12 +1,10 @@
-
 {
 	"name": "BetterDisplay",
 	"namespace": "RobocrafterLP",
-	"version_number": "1.1.0",
+	"version_number": "1.2.0",
 	"description": "",
 	"website_url": "",
-	"dependencies": [
-	],
+	"dependencies": ["dami-ModOptions"],
 	"extra": {
 		"godot": {
 			"incompatibilities": [
@@ -14,7 +12,18 @@
 			"authors": ["RobocrafterLP"],
 			"compatible_mod_loader_version": ["3.0.0"],
 			"compatible_game_version": ["0.6.1.6"],
-			"config_defaults": {}
+			"config_defaults": {},
+			"config_schema": {
+				"title": "Config_better_display",
+				"description": "Config for better display",
+				"type": "object",
+				"properties": {
+					"DEX_MODE": {
+						"type": "boolean",
+						"default": true
+					}
+				}
+			}
 		}
 	}
 }
