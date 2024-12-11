@@ -1,6 +1,19 @@
 extends Main
 
 var _tardigrades: = [null, null, null, null]
+const better_display_dex_mode_config = "DEX_MODE"
+
+func _ready():
+	var ModsConfigInterface = get_node("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	
+	if ModsConfigInterface != null:
+		ModsConfigInterface.connect("setting_changed", self, "on_better_display_setting_changed")
+
+func on_better_display_setting_changed(setting_name: String, value, mod_name):
+	if setting_name == better_display_dex_mode_config:
+		for consumable in _consumables:
+			consumable.consumable_data.icon = ItemService.get_icon_from_consumable(consumable.consumable_data)
+			consumable.set_texture(consumable.consumable_data.icon)
 
 func round_to_dec(num, digit):
     return round(num * pow(10.0, digit)) / pow(10.0, digit)
