@@ -33,6 +33,7 @@ func install_script_extensions() -> void:
 		"ui/hud/ui_consumable_to_process_list.gd",
 		"ui/hud/ui_upgrade_to_process_list.gd",
 		"ui/menus/pages/main_menu.gd",
+		"ui/menus/pages/inventory_container.gd",
 		"main.gd"
 	]
 	
