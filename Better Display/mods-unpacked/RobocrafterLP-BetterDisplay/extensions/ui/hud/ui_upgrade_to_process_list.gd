@@ -42,7 +42,10 @@ func updatelist(icon:Resource, level:int)->void :
         var nodeSize = node.get_size()
         var label = CustomLabel.duplicate()
         label.text = str(_elements.size())
-        label.rect_position = nodeSize + Vector2(20, 0)
+        if RunData.is_coop_run:
+            label.rect_position = nodeSize - Vector2(0, 20)
+        else:
+            label.rect_position = nodeSize + Vector2(20, 0)
         node.add_child(label)
         _add_ui_node(node)
     else:
@@ -50,7 +53,10 @@ func updatelist(icon:Resource, level:int)->void :
         if label == null:
             var nodeSize = node.get_size()
             label = CustomLabel.duplicate()
-            label.rect_position = nodeSize + Vector2(20, 0)
+            if RunData.is_coop_run:
+                label.rect_position = nodeSize - Vector2(0, 20)
+            else:
+                label.rect_position = nodeSize + Vector2(20, 0)
             label.text = str(_elements.size())
             node.add_child(label)
             node.set_data(_get_icon(), _elements.size())

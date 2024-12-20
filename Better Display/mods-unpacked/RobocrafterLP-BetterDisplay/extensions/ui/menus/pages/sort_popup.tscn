@@ -1,0 +1,91 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://resources/themes/panel_button_theme.tres" type="Theme" id=1]
+[ext_resource path="res://resources/fonts/actual/base/font_26.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ui/menus/global/my_menu_button.gd" type="Script" id=3]
+[ext_resource path="res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="SortPopup" type="VBoxContainer"]
+margin_right = 268.0
+margin_bottom = 70.0
+script = ExtResource( 4 )
+
+[node name="Buttons" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+margin_right = 423.0
+margin_bottom = 218.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Buttons"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 418.0
+margin_bottom = 213.0
+custom_constants/margin_right = 15
+custom_constants/margin_top = 15
+custom_constants/margin_left = 15
+custom_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/MarginContainer"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 398.0
+margin_bottom = 193.0
+custom_constants/separation = 10
+
+[node name="DefaultButton" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_right = 383.0
+margin_bottom = 37.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "SORT_BY_DEFAULT_BUTTON"
+script = ExtResource( 3 )
+
+[node name="RarityButton2" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 47.0
+margin_right = 383.0
+margin_bottom = 84.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "SORT_BY_RARITY_BUTTON"
+script = ExtResource( 3 )
+
+[node name="QuantityButton" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 94.0
+margin_right = 383.0
+margin_bottom = 131.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "SORT_BY_QUANTITY_BUTTON"
+script = ExtResource( 3 )
+
+[node name="CancelButton" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 141.0
+margin_right = 383.0
+margin_bottom = 178.0
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "MENU_CANCEL"
+script = ExtResource( 3 )
+
+[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/DefaultButton" to="." method="_on_DefaultButton_pressed"]
+[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/RarityButton2" to="." method="_on_RarityButton_pressed"]
+[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/QuantityButton" to="." method="_on_QuantityButton_pressed"]
+[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/CancelButton" to="." method="_on_CancelButton_pressed"]

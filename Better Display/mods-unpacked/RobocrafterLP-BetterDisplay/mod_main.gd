@@ -29,16 +29,24 @@ func install_script_extensions() -> void:
 	var extensions = [
 		"singletons/run_data.gd",
 		"singletons/item_service.gd",
-		"ui/hud/player_ui_elements.gd",
+		#"singletons/debug_service.gd",
 		"ui/hud/ui_consumable_to_process_list.gd",
 		"ui/hud/ui_upgrade_to_process_list.gd",
 		"ui/menus/pages/main_menu.gd",
+		"main.gd",
 		"ui/menus/pages/inventory_container.gd",
-		"main.gd"
+		"ui/menus/shop/shop.gd",
+		"ui/menus/shop/coop_shop.gd"
 	]
 	
 	for extension in extensions:
 		ModLoaderMod.install_script_extension(extensions_dir_path.plus_file(extension))
+
+	var scenes = [
+		
+	]
+	for scene in scenes:
+		self.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/" + scene).instance())
 
 func add_translations() -> void:
 	translations_dir_path = mod_dir_path.plus_file("translations")

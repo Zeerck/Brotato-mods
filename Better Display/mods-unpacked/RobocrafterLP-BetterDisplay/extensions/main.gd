@@ -1,7 +1,17 @@
 extends Main
 
-var _tardigrades: = [null, null, null, null]
+var _tardigrades := [null, null, null, null]
 const better_display_dex_mode_config = "DEX_MODE"
+
+const xp_string = "XP.%s/%s | LV.%s"
+
+func get_xp_string(player: int) -> String:
+	return str(xp_string % [
+			str(int(RunData.get_player_xp(player))),
+			str(int(RunData.get_next_level_xp_needed(player))),
+			str(RunData.get_player_level(player))
+			]
+			)
 
 func _ready():
 	var ModsConfigInterface = get_node("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
@@ -16,13 +26,13 @@ func on_better_display_setting_changed(setting_name: String, value, mod_name):
 			consumable.set_texture(consumable.consumable_data.icon)
 
 func round_to_dec(num, digit):
-    return round(num * pow(10.0, digit)) / pow(10.0, digit)
+	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func on_xp_added(current_xp: float, max_xp: float, player_index: int) -> void:
 	var player_ui: PlayerUIElements = _players_ui[player_index]
 	var display_xp = int(current_xp) % int(ceil(max_xp))
 	player_ui.xp_bar.update_value(display_xp, int(max_xp))
-	player_ui.level_label.text = "XP." + str(display_xp) + "/" + str(int(max_xp)) + " | LV." + str(RunData.get_player_level(player_index))
+	player_ui.level_label.text = get_xp_string(player_index)
 
 func _on_EntitySpawner_players_spawned(players: Array) -> void:
 	._on_EntitySpawner_players_spawned(players)
@@ -31,6 +41,9 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void:
 		var player_idx_string = str(i + 1)
 		var tardigrade = _tardigrades[i]
 		var left = i == 0 or i == 2
+
+		player_ui.level_label.text = get_xp_string(i)
+
 		if not tardigrade:
 			tardigrade = preload("res://ui/hud/ui_gold.tscn").instance()
 			tardigrade.name = str("%%UITardigradeP%s" % player_idx_string)
@@ -42,11 +55,11 @@ func _on_EntitySpawner_players_spawned(players: Array) -> void:
 			player_ui.life_bar.get_parent().add_child(tardigrade)
 			player_ui.life_bar.get_parent().move_child(tardigrade, player_ui.gold.get_index())
 
-func _on_player_health_updated(player:Player, current_val:int, max_val:int)->void :
+func _on_player_health_updated(player: Player, current_val: int, max_val: int) -> void:
 	._on_player_health_updated(player, current_val, max_val)
 	var player_index = player.player_index
 
-	var player_ui:PlayerUIElements = _players_ui[player_index]
+	var player_ui: PlayerUIElements = _players_ui[player_index]
 	var life_label = player_ui.life_label
 	if int(player.current_stats.health) == int(player.max_stats.health):
 		life_label.text = str(max(player.current_stats.health, 0.0)) + " / " + str(player.max_stats.health)
@@ -65,4 +78,3 @@ func _physics_process(_delta: float) -> void:
 			tardigrade.visible = life_bar_effects.hit_protection > 0
 			tardigrade.get_node("Icon").modulate = Color.white
 			tardigrade.update_value(life_bar_effects.hit_protection)
-			

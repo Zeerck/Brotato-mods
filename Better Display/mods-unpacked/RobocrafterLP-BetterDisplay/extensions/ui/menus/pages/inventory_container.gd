@@ -1,11 +1,16 @@
 # This whole script needs refactoring
 extends InventoryContainer
 
-var sort_by_rarity_button: MyMenuButton = MyMenuButton.new()
-var sort_by_quantity_button: MyMenuButton = MyMenuButton.new()
-var available_scenes: Array = ["Shop", "CoopShop"]
-
+var sort_options_button: MyMenuButton = MyMenuButton.new()
+var available_scenes: Array = ["Shop", "CoopShop", "Main"]
+var _sort_popup
  
+class MyCustomSorter:
+	static func sort_tier(a, b):
+		return a.tier < b.tier
+	static func sort_quantity(a, b):
+		return a.quantity < b.quantity
+
 func is_inventory() -> bool:
 	return self.name == "ItemsContainer"
 
@@ -20,23 +25,34 @@ func _ready():
 	# TODO: Make space between buttons and labels in h_box
 	if is_inventory() and is_available_scene():
 		set_h_box()
-		
-		set_sort_button(sort_by_rarity_button, "SortByRarityButton", "SORT_BY_RARITY_BUTTON")
-		set_sort_button(sort_by_quantity_button, "SortByQuantityButton", "SORT_BY_QUANTITY_BUTTON")
+		_sort_popup = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance()
+		_sort_popup.hide()
+		_sort_popup.connect("sort_by", self, "_on_sort_by")
+		get_tree().get_current_scene().call_deferred("add_child", _sort_popup)
+		set_sort_button(sort_options_button, "SortOptions", "SORT_OPTIONS")
 		
 	# Still remember about DRY, but whatever...
-	if sort_by_rarity_button != null:
-		var _err = sort_by_rarity_button.connect("pressed", self, "_on_sort_by_rarity_button_pressed")
-	if sort_by_quantity_button != null:
-		var _err = sort_by_quantity_button.connect("pressed", self, "_on_sort_by_quantity_button_pressed")
+	if sort_options_button != null:
+		var _err = sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
 
 func _on_Elements_elements_changed():
 	._on_Elements_elements_changed()
-	
-	if sort_by_rarity_button != null:
-		set_button_visible(sort_by_rarity_button)
-	if sort_by_quantity_button != null:
-		set_button_visible(sort_by_quantity_button)
+
+	if sort_options_button != null:
+		set_button_visible(sort_options_button)
+
+func _on_sort_by(type: String):
+	if type == "cancel":
+		_sort_popup.hide()
+	elif type == "rarity":
+		sort_by_rarity()
+		_sort_popup.hide()
+	elif type == "quantity":
+		sort_by_quantity()
+		_sort_popup.hide()
+	elif type == "default":
+		sort_by_default()
+		_sort_popup.hide()
 
 func set_button_visible(sort_button: MyMenuButton):
 	# Here is a check for sort_button to show it
@@ -57,9 +73,7 @@ func set_sort_button(sort_button: MyMenuButton, button_name: String, button_text
 	if player_index < 0:
 		return null
 	
-	var font = load("res://resources/fonts/actual/base/font_22.tres")
-	var offset = 100
-	
+	var font = load("res://resources/fonts/actual/base/font_22.tres")	
 	sort_button.name = button_name
 	sort_button.text = button_text
 	sort_button.set("custom_fonts/font", font)
@@ -84,17 +98,35 @@ func set_h_box():
 	while label_and_sort_container.get_position_in_parent() > 0:
 		.move_child(label_and_sort_container, label_and_sort_container.get_position_in_parent() - 1)
 
-func _on_sort_by_rarity_button_pressed():
+#sorts 
+func tier_sort(a, b): 
+		return a.tier > b.tier
+
+func sort_by_rarity():
 	# Do whatever you want
 	var player_index = get_player_index()
-	
+	var items = RunData.get_player_items(player_index)
 	print("-----------Rarirty Player index: %s" % player_index)
+	items.sort_custom(MyCustomSorter, "sort_tier")
+	.set_data("ITEMS", Category.ITEM, items, true, true)
 	
-func _on_sort_by_quantity_button_pressed():
-	# Do whatever you want
+func sort_by_quantity():
 	var player_index = get_player_index()
-	
+	var items = RunData.get_player_items(player_index)
 	print("-----------Quantity Player index: %s" % player_index)
+	#items.sort_custom(MyCustomSorter, "sort_quantity")
+	.set_data("ITEMS", Category.ITEM, items, true, true)
+	
+func sort_by_default():
+	var player_index = get_player_index()
+	var items = RunData.get_player_items(player_index)
+	print("-----------Quantity Player index: %s" % player_index)
+	.set_data("ITEMS", Category.ITEM, items, true, true)
+
+func _on_sort_options_button_pressed():
+	_sort_popup.open(sort_options_button)
+	_sort_popup.focus()
+
 
 # After this I understand why I can’t get a job :D
 func get_player_index() -> int:
