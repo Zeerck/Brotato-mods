@@ -1,2 +1,7 @@
 keys,en,ru
 DEX_MODE,Dex Mode,Режим Dex
+SORT_OPTIONS_BUTTON,Sort options,Сортировка
+MENU_CANCEL,Cancel,Отмена
+SORT_BY_QUANTITY_BUTTON,Sort by quantity,Сортировать по количеству
+SORT_BY_RARITY_BUTTON,Sort by rarity,Сортировать по редкости
+SORT_BY_DEFAULT_BUTTON,Default sort,Обычная сортировка

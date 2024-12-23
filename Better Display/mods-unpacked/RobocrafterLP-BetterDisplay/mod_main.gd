@@ -34,9 +34,9 @@ func install_script_extensions() -> void:
 		"ui/hud/ui_upgrade_to_process_list.gd",
 		"ui/menus/pages/main_menu.gd",
 		"main.gd",
-		"ui/menus/pages/inventory_container.gd",
 		"ui/menus/shop/shop.gd",
-		"ui/menus/shop/coop_shop.gd"
+		"ui/menus/shop/coop_shop.gd",
+		"ui/menus/shop/coop_shop_player_container.gd"
 	]
 	
 	for extension in extensions:
