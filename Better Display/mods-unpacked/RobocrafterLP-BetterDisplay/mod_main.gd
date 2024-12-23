@@ -27,16 +27,18 @@ func install_script_extensions() -> void:
 	extensions_dir_path = mod_dir_path.plus_file("extensions")
 	
 	var extensions = [
+		"main.gd",
 		"singletons/run_data.gd",
 		"singletons/item_service.gd",
 		#"singletons/debug_service.gd",
 		"ui/hud/ui_consumable_to_process_list.gd",
 		"ui/hud/ui_upgrade_to_process_list.gd",
 		"ui/menus/pages/main_menu.gd",
-		"main.gd",
 		"ui/menus/shop/shop.gd",
 		"ui/menus/shop/coop_shop.gd",
-		"ui/menus/shop/coop_shop_player_container.gd"
+		"ui/menus/shop/coop_shop_player_container.gd",
+		"ui/menus/shop/inventory_container.gd",
+		"ui/menus/ingame/pause_menu.gd"
 	]
 	
 	for extension in extensions:
