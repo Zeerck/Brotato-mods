@@ -55,7 +55,7 @@ custom_fonts/font = ExtResource( 2 )
 text = "SORT_BY_DEFAULT_BUTTON"
 script = ExtResource( 3 )
 
-[node name="RarityButton2" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
+[node name="RarityButton" type="Button" parent="Buttons/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 47.0
 margin_right = 383.0
@@ -86,6 +86,6 @@ text = "MENU_CANCEL"
 script = ExtResource( 3 )
 
 [connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/DefaultButton" to="." method="_on_DefaultButton_pressed"]
-[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/RarityButton2" to="." method="_on_RarityButton_pressed"]
+[connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/RarityButton" to="." method="_on_RarityButton_pressed"]
 [connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/QuantityButton" to="." method="_on_QuantityButton_pressed"]
 [connection signal="pressed" from="Buttons/MarginContainer/VBoxContainer/CancelButton" to="." method="_on_CancelButton_pressed"]
