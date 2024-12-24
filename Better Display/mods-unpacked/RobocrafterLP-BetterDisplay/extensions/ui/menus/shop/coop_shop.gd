@@ -8,6 +8,11 @@ func get_xp_string(player: int) -> String:
 			]
 			)
 
+func get_ui_gold_icon() -> Resource:
+	if RunData.is_dex_mode:
+		return load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
+	return load("res://items/materials/material_ui.png")
+	
 func new_xp_bar(player: int) -> UIProgressBar:
 	var bar = load("res://ui/hud/ui_progress_bar.tscn").instance()
 	var label = Label.new()
@@ -30,6 +35,9 @@ func _ready():
 	for player_index in player_count:
 		var player_container = _get_coop_player_container(player_index)
 		var _put
+		
+		_get_gold_label(player_index).get_parent().get_node("GoldIcon").set_icon(get_ui_gold_icon(), CoopService.get_player_color(player_index))
+		_get_reroll_button(player_index).set_material_icon(get_ui_gold_icon(), CoopService.get_player_color(player_index))
 		if player_count >= 3:
 			_put = player_container.gold_label.get_parent().get_parent().get_parent()
 			var bar = new_xp_bar(player_index)

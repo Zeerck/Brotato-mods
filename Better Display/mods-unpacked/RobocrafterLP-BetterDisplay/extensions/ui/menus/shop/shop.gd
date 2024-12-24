@@ -8,7 +8,16 @@ func get_xp_string(player: int) -> String:
 			]
 			)
 
+func get_ui_gold_icon() -> Resource:
+	if RunData.is_dex_mode:
+		return load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
+	return load("res://items/materials/material_ui.png")
+
 func _ready():
+    var ModsConfigInterface = get_node("/root/ModLoader/dami-ModOptions/ModsConfigInterface")
+	
+    if ModsConfigInterface != null:
+        ModsConfigInterface.connect("setting_changed", self, "on_better_display_setting_changed")
     var bar = load("res://ui/hud/ui_progress_bar.tscn").instance()
     var label = Label.new()
     label.set("custom_fonts/font", preload("res://resources/fonts/actual/base/font_26_outline.tres"))
@@ -25,3 +34,5 @@ func _ready():
     bar.update_value(int(RunData.get_player_xp(0)), int(RunData.get_next_level_xp_needed(0)))
     _title.get_parent().add_child(bar)
     _title.get_parent().move_child(bar, _title.get_index() + 1)
+    _get_gold_label(0).get_parent().get_node("GoldIcon").set_icon(get_ui_gold_icon(), Utils.GOLD_COLOR)
+    _get_reroll_button(0).set_material_icon(get_ui_gold_icon(), Utils.GOLD_COLOR)

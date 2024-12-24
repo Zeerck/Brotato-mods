@@ -31,7 +31,7 @@ func _ready():
 		
 			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
 			_err = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
-
+			_sort_options_button.visible = true
 
 # Custom func's
 func is_available_scene() -> bool:

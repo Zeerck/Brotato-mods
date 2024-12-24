@@ -1,6 +1,6 @@
 extends InventoryContainer
 
-var available_scenes: Array = ["Shop"]
+var available_scenes: Array = ["Shop", "Main"]
 var _sort_options_button: MyMenuButton
 var _sort_popup: SortPopup
 
@@ -15,6 +15,9 @@ class InventorySortType:
 func _ready():
 	if not RunData.is_coop_run and is_available_scene():
 		var shop = get_shop()
+		if !shop:
+			return
+
 		var parent = shop.get_node("Content")
 		
 		_sort_options_button = set_h_box()._sort_options_button
@@ -84,15 +87,30 @@ func set_h_box() -> UpperHBox:
 
 # Event func's
 func _on_sort_options_button_pressed():
+	var shop = get_shop()
 	if _sort_popup != null:
 		_sort_popup.open(_sort_options_button)
 		_sort_popup.focus()
+		if shop.get_name() == "Shop":
+			shop.disable_shop_buttons_focus()
+			shop.disable_shop_lock_buttons_focus()
+			shop._stats_container.disable_focus()
+			shop._block_background.show()
+
+func _cancel():
+	var shop = get_shop()
+	_sort_popup.hide()
+	.focus_element_index(0)
+	if shop.get_name() == "Shop":
+		shop.enable_shop_buttons_focus()
+		shop.enable_shop_lock_buttons_focus()
+		shop._stats_container.enable_focus()
+		shop._block_background.hide()
 
 func _on_sort_by(type: String):
 	match type:
 		InventorySortType.CANCEL:
-			_sort_popup.hide()
-			.focus_element_index(0)
+			_cancel()
 		InventorySortType.RARITY:
 			sort_by_rarity()
 			_sort_popup.hide()

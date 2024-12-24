@@ -35,6 +35,7 @@ func _on_sort_options_button_pressed():
 	if _sort_popup != null:
 		_sort_popup.open(_sort_options_button)
 		_sort_popup.focus()
+		_popup_dim_screen.show()
 
 func set_h_box() -> UpperHBox:
 	var old_label: Label = _items_container.get_node("Label")
@@ -56,13 +57,18 @@ func set_h_box() -> UpperHBox:
 func get_player_items_inventory():
 	return player_gear_container.get_node("ItemsContainer")
 
+func _cancel():
+	var items_inventory = get_player_items_inventory()
+	_sort_popup.hide()
+	items_inventory.focus_element_index(0)
+	_popup_dim_screen.hide()
+
 func _on_sort_by(type: String):
 	var items_inventory = get_player_items_inventory()
 	
 	match type:
 		InventorySortType.CANCEL:
-			_sort_popup.hide()
-			items_inventory.focus_element_index(0)
+			_cancel()
 		InventorySortType.RARITY:
 			sort_by_rarity()
 			_sort_popup.hide()

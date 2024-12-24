@@ -36,9 +36,12 @@ func install_script_extensions() -> void:
 		"ui/menus/pages/main_menu.gd",
 		"ui/menus/shop/shop.gd",
 		"ui/menus/shop/coop_shop.gd",
+		"ui/menus/shop/shop_item.gd",
 		"ui/menus/shop/coop_shop_player_container.gd",
 		"ui/menus/shop/inventory_container.gd",
-		"ui/menus/ingame/pause_menu.gd"
+		"ui/menus/ingame/pause_menu.gd",
+		"ui/menus/ingame/coop_upgrades_ui_player_container.gd",
+		"ui/menus/ingame/upgrades_ui_player_container.gd"
 	]
 	
 	for extension in extensions:
