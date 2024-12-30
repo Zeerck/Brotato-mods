@@ -15,9 +15,10 @@ class InventorySortType:
 	const QUANTITY = "quantity"
 	const DEFAULT = "default"
 
-
 # Default func's
 func _ready():
+	if true:
+		return
 	items_container = .get_node("Menus/MainMenu/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/ItemsContainer")
 	
 	if is_available_scene() and items_container != null:
@@ -47,11 +48,10 @@ func set_h_box(items_container) -> UpperHBox:
 	if upper_hbox != null:
 		return upper_hbox
 	
+	upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
 	items_container.remove_child(old_label)
-	items_container.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance())
+	items_container.add_child(upper_hbox)
 
-	upper_hbox = items_container.get_node("UpperHBox")
-	
 	items_container._label = upper_hbox._label
 
 	while upper_hbox.get_position_in_parent() > 0:
@@ -128,17 +128,14 @@ func get_item_quantity(item_to_count, items: Array) -> int:
 
 func sort_by_rarity():
 	var items = RunData.get_player_items(_player_index)
-
 	items.sort_custom(self, "sort_items_by_rarity_and_quantity")
 	items_container.set_data("ITEMS", Category.ITEM, items, true, true)
 
 func sort_by_quantity():
 	var items = RunData.get_player_items(_player_index)
-
 	items.sort_custom(self, "sort_items_by_quantity_and_rarity")
 	items_container.set_data("ITEMS", Category.ITEM, items, true, true)
 
 func sort_by_default():
 	var items = RunData.get_player_items(_player_index)
-
 	items_container.set_data("ITEMS", Category.ITEM, items, true, true)
