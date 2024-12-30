@@ -44,8 +44,9 @@ func _ready():
 		var _err2 = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
 		if get_pause():
 			_sort_options_button.hide()
-		# Idk why, but if you don't do this and you press "Cancel" in popup, you get crash :\
-		sort_by_default()
+		
+		sort_by_default() # Idk why, but if you don't do this and you press "Cancel" in popup, you get crash :\
+		
 		if parent != null:
 			parent.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance())
 			_sort_popup = parent.get_node("SortPopup")
@@ -54,7 +55,7 @@ func _ready():
 			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
 
 func _on_Elements_elements_changed():
-	._on_Elements_elements_changed() # Will this function still be called, like _ready() func?
+	._on_Elements_elements_changed()
 	var available_scenes_for_update: Array = ["Shop", "CoopShop", "Main"]
 	var upper_hbox: UpperHBox = .get_node("UpperHBox")
 	
@@ -138,7 +139,7 @@ func _on_sort_options_button_pressed():
 			disable_buttons_focus()
 			shop._block_background.show()
 
-func _cancel():
+func _reset_focus():
 	_sort_popup.hide()
 	.focus_element_index(0)
 	var shop = find_first_ancestor("Shop", "Control")
@@ -152,19 +153,16 @@ func _cancel():
 func _on_sort_by(type: String):
 	match type:
 		InventorySortType.CANCEL:
-			_cancel()
+			_reset_focus()
 		InventorySortType.RARITY:
 			sort_by_rarity()
-			_sort_popup.hide()
-			.focus_element_index(0)
+			_reset_focus()
 		InventorySortType.QUANTITY:
 			sort_by_quantity()
-			_sort_popup.hide()
-			.focus_element_index(0)
+			_reset_focus()
 		InventorySortType.DEFAULT:
 			sort_by_default()
-			_sort_popup.hide()
-			.focus_element_index(0)
+			_reset_focus()
 
 
 # Sort func's
@@ -230,7 +228,6 @@ func sort_by_default():
 	if player_index >= 0:
 		var items = RunData.get_player_items(player_index)
 		.set_data("ITEMS", Category.ITEM, items, true, true)
-
 
 func get_player_index() -> int:
 	if not RunData.is_coop_run:

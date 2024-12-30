@@ -4,7 +4,7 @@ var _items_container: InventoryContainer
 var _sort_options_button: MyMenuButton
 var _sort_popup: SortPopup
 
-var available_scenes: Array = ["Shop", "CoopShop", "Main"]
+var available_scenes: Array = ["CoopShop"]
 
 # Class with constant's, prevents handwritten words error
 class InventorySortType:
@@ -12,6 +12,28 @@ class InventorySortType:
 	const RARITY = "rarity"
 	const QUANTITY = "quantity"
 	const DEFAULT = "default"
+
+func find_first_ancestor_which_is_a(type: String, start: Node = null) -> Node:
+	var current  # Start with the parent node
+	if start != null:
+		current = start
+	else:
+		current = .get_parent()
+	while current:
+		# Check if the node is of the specified type or inherits from it
+		print(current.get_class() , type)
+		if current.get_class() == type:
+			return current
+		current = current.get_parent()  # Move up the tree
+	return null  # No matching ancestor found
+
+func find_first_ancestor(name: String = "", type: String = "") -> Node:
+	var current = .get_parent()  # Start with the parent node
+	while current:
+		if (name != "" and current.name == name) and (type != "" and current.get_class() == type):
+			return current  # Return the first ancestor matching name or type
+		current = current.get_parent()  # Move up the tree
+	return null  # No matching ancestor found
 
 func is_available_scene() -> bool:
 	if get_tree().get_current_scene().get_name() in available_scenes:
@@ -32,10 +54,36 @@ func _ready():
 
 # Event func's
 func _on_sort_options_button_pressed():
-	if _sort_popup != null:
+	if _sort_popup != null and get_pause() == null:
 		_sort_popup.open(_sort_options_button)
 		_sort_popup.focus()
-		_popup_dim_screen.show()
+		var shop = find_first_ancestor("Shop", "Control")
+		if shop != null:
+			shop.disable_shop_buttons_focus()
+			shop.disable_shop_lock_buttons_focus()
+			shop._stats_container.disable_focus()
+			disable_buttons_focus()
+			shop._block_background.show()
+
+func disable_buttons_focus():
+	for i in player_gear_container._elements.get_children():
+		i.focus_mode = FOCUS_NONE
+
+func enable_buttons_focus():
+	for i in player_gear_container._elements.get_children():
+		i.focus_mode = FOCUS_ALL
+
+func get_pause():
+	var mainmenu = .get_parent()
+	var max_iterations = 15
+	
+	for i in max_iterations:
+		if mainmenu != null and mainmenu.name == "MainMenu":
+			return mainmenu
+		elif mainmenu != null:
+			mainmenu = mainmenu.get_parent()
+		else:
+			return null
 
 func set_h_box() -> UpperHBox:
 	var old_label: Label = _items_container.get_node("Label")
@@ -57,30 +105,30 @@ func set_h_box() -> UpperHBox:
 func get_player_items_inventory():
 	return player_gear_container.get_node("ItemsContainer")
 
-func _cancel():
-	var items_inventory = get_player_items_inventory()
+func _reset_focus():
 	_sort_popup.hide()
-	items_inventory.focus_element_index(0)
-	_popup_dim_screen.hide()
+	player_gear_container.get_node("ItemsContainer").focus_element_index(0)
+	var shop = find_first_ancestor("Shop", "Control")
+	if shop != null:
+		shop.enable_shop_buttons_focus()
+		shop.enable_shop_lock_buttons_focus()
+		shop._stats_container.enable_focus()
+		enable_buttons_focus()
+		shop._block_background.hide()
 
 func _on_sort_by(type: String):
-	var items_inventory = get_player_items_inventory()
-	
 	match type:
 		InventorySortType.CANCEL:
-			_cancel()
+			_reset_focus()
 		InventorySortType.RARITY:
 			sort_by_rarity()
-			_sort_popup.hide()
-			items_inventory.focus_element_index(0)
+			_reset_focus()
 		InventorySortType.QUANTITY:
 			sort_by_quantity()
-			_sort_popup.hide()
-			items_inventory.focus_element_index(0)
+			_reset_focus()
 		InventorySortType.DEFAULT:
 			sort_by_default()
-			_sort_popup.hide()
-			items_inventory.focus_element_index(0)
+			_reset_focus()
 
 
 # Sort func's
