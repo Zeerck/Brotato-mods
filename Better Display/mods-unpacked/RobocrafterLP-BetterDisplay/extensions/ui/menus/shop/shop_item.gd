@@ -1,9 +1,12 @@
 extends ShopItem
 
+onready var mod_custom_material_ui = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
+onready var base_custom_material_ui = load("res://items/materials/material_ui.png")
+
 func get_ui_gold_icon() -> Resource:
 	if RunData.is_dex_mode:
-		return load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
-	return load("res://items/materials/material_ui.png")
+		return mod_custom_material_ui
+	return base_custom_material_ui
 
 func set_shop_item(p_item_data: ItemParentData, p_wave_value: int = RunData.current_wave)->void :
     .set_shop_item(p_item_data, p_wave_value)

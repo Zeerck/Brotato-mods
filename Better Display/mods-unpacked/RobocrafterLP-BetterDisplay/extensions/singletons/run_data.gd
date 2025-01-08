@@ -21,7 +21,7 @@ func _ready():
 
 
 # Custom func's
-func on_better_display_setting_changed(setting_name: String, value, mod_name): # Yes, func is called that because some conflicts happen here
+func on_better_display_setting_changed(setting_name: String, value, _mod_name): # Yes, func is called that because some conflicts happen here
 	var config = ModLoaderConfig.get_current_config(RobocrafterLP_BetterDisplay)
 
 	if setting_name == better_display_dex_mode_config:

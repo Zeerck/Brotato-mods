@@ -1,8 +1,11 @@
 extends CoopShopPlayerContainer
 
+onready var mod_upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
+onready var mod_sort_popup = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance()
+
 var _items_container: InventoryContainer
 var _sort_options_button: MyMenuButton
-var _sort_popup: SortPopup
+var _sort_popup
 
 var available_scenes: Array = ["CoopShop"]
 
@@ -44,13 +47,17 @@ func is_available_scene() -> bool:
 func _ready():
 	if is_available_scene():
 		_items_container = player_gear_container.items_container
-		_sort_options_button = set_h_box()._sort_options_button
-		item_popup.get_parent().add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance())
-		_sort_popup = item_popup.get_parent().get_node("SortPopup")
-		_sort_popup.hide()
+
+		var upper_hbox = set_h_box()
+
+		if upper_hbox != null:
+			_sort_options_button = upper_hbox._sort_options_button
+			item_popup.get_parent().add_child(mod_sort_popup)
+			_sort_popup = item_popup.get_parent().get_node("SortPopup")
+			_sort_popup.hide()
 		
-		var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
-		var _err2 = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
+			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
+			var _err2 = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
 
 # Event func's
 func _on_sort_options_button_pressed():
@@ -85,13 +92,13 @@ func get_pause():
 		else:
 			return null
 
-func set_h_box() -> UpperHBox:
+func set_h_box():
 	var old_label: Label = _items_container.get_node("Label")
 	
 	_items_container.remove_child(old_label)
-	_items_container.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance())
+	_items_container.add_child(mod_upper_hbox)
 	
-	var upper_hbox = _items_container.get_node("UpperHBox") as UpperHBox
+	var upper_hbox = _items_container.get_node("UpperHBox")
 	
 	_items_container._label = upper_hbox._label
 	

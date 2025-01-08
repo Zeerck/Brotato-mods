@@ -35,7 +35,7 @@ func get_ui_gold_icon() -> Resource:
 		return load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
 	return load("res://items/materials/material_ui.png")
 
-func on_better_display_setting_changed(setting_name: String, value, mod_name):
+func on_better_display_setting_changed(setting_name: String, _value, _mod_name):
 	if setting_name == better_display_dex_mode_config:
 		for consumable in _consumables:
 			consumable.consumable_data.icon = ItemService.get_icon_from_consumable(consumable.consumable_data)

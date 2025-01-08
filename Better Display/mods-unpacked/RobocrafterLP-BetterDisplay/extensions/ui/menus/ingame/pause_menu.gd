@@ -1,12 +1,15 @@
 extends PauseMenu
 
+onready var mod_sort_popup = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance()
+onready var mod_upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
+
 # This is the third copy of the same code for sort_menu...
 # We need something better that just "copying" the code.
 # I need a little research of godot script
 
 var available_scenes: Array = ["Shop", "CoopShop", "Main"]
 var _sort_options_button: MyMenuButton
-var _sort_popup: SortPopup
+var _sort_popup
 var items_container: InventoryContainer
 
 class InventorySortType:
@@ -17,22 +20,24 @@ class InventorySortType:
 
 # Default func's
 func _ready():
-	if true:
-		return
 	items_container = .get_node("Menus/MainMenu/MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/ItemsContainer")
 	
 	if is_available_scene() and items_container != null:
-		_sort_options_button = set_h_box(items_container)._sort_options_button
-		var parent = _main_menu.get_node("MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/ItemsContainer")
+		var upper_hbox = set_h_box(items_container)
+
+		if upper_hbox != null:
+			_sort_options_button = upper_hbox._sort_options_button
+			var parent = _main_menu.get_node("MarginContainer/HBoxContainer/HBoxContainer/VBoxContainer/ItemsContainer")
 		
-		if parent != null:
-			parent.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance())
-			_sort_popup = parent.get_node("SortPopup")
-			_sort_popup.hide()
+			if parent != null:
+				parent.add_child(mod_sort_popup)
+				_sort_popup = parent.get_node("SortPopup")
+				_sort_popup.hide()
 		
-			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
-			_err = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
-			_sort_options_button.visible = true
+				var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
+				_err = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
+				_sort_options_button.visible = false
+#				_sort_options_button.visible = true
 
 # Custom func's
 func is_available_scene() -> bool:
@@ -41,21 +46,22 @@ func is_available_scene() -> bool:
 	
 	return false
 
-func set_h_box(items_container) -> UpperHBox:
-	var upper_hbox: UpperHBox = items_container.get_node("UpperHBox")
-	var old_label: Label = items_container.get_node("Label")
-
+func set_h_box(container):
+	var upper_hbox = container.get_node("UpperHBox")
+	
 	if upper_hbox != null:
 		return upper_hbox
-	
-	upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
-	items_container.remove_child(old_label)
-	items_container.add_child(upper_hbox)
 
-	items_container._label = upper_hbox._label
+	var old_label: Label = container.get_node("Label")
+	
+	upper_hbox = mod_upper_hbox
+	container.remove_child(old_label)
+	container.add_child(upper_hbox)
+
+	container._label = upper_hbox._label
 
 	while upper_hbox.get_position_in_parent() > 0:
-		items_container.move_child(upper_hbox, upper_hbox.get_position_in_parent() - 1)
+		container.move_child(upper_hbox, upper_hbox.get_position_in_parent() - 1)
 
 	return upper_hbox
 

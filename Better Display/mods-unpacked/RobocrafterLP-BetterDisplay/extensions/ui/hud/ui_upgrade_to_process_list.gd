@@ -1,6 +1,8 @@
 extends UIUpgradeToProcessList
 
 onready var CustomLabel = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/count_label.tscn").instance()
+onready var mod_upgrade_icon = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/upgrade_icon.png")
+
 const better_display_dex_mode_config = "DEX_MODE"
 var lv_icon
 
@@ -10,13 +12,13 @@ func _ready():
 	if ModsConfigInterface != null:
 		ModsConfigInterface.connect("setting_changed", self, "on_better_display_setting_changed")
 
-func on_better_display_setting_changed(setting_name: String, value, mod_name):
+func on_better_display_setting_changed(setting_name: String, _value, _mod_name):
     if setting_name == better_display_dex_mode_config and _elements.size() > 0:
         updatelist(null, _elements.size())
 
 func _get_icon()->Resource:
     if RunData.is_dex_mode:
-        return load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/upgrade_icon.png")
+        return mod_upgrade_icon
     return lv_icon
 
 func add_element(icon:Resource, level:int)->void :
