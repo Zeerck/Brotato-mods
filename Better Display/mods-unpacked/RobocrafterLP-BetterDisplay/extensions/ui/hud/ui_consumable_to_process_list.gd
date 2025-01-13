@@ -11,7 +11,7 @@ func _ready():
 	if ModsConfigInterface != null:
 		ModsConfigInterface.connect("setting_changed", self, "on_better_display_setting_changed")
 
-func on_better_display_setting_changed(setting_name: String, value, mod_name):
+func on_better_display_setting_changed(setting_name: String, _value, _mod_name):
 	if setting_name == better_display_dex_mode_config:
 		for box in box_elements:
 			updatelist(box_elements[box][0])

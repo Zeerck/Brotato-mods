@@ -1,8 +1,11 @@
 extends InventoryContainer
 
+onready var mod_upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
+onready var mod_sort_popup = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance()
+
 var available_scenes: Array = ["Shop"]
 var _sort_options_button: MyMenuButton
-var _sort_popup: SortPopup
+var _sort_popup
 
 class InventorySortType:
 	const CANCEL = "cancel"
@@ -48,23 +51,27 @@ func _ready():
 		sort_by_default() # Idk why, but if you don't do this and you press "Cancel" in popup, you get crash :\
 		
 		if parent != null:
-			parent.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance())
-			_sort_popup = parent.get_node("SortPopup")
+			parent.add_child(mod_sort_popup)
+			_sort_popup = parent.get_node("SortPopup") # TODO: "Parent are busy" error!
 			_sort_popup.hide()
 		
 			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
 
 func _on_Elements_elements_changed():
 	._on_Elements_elements_changed()
+
+	if self.name != "ItemsContainer":
+		return
+
 	var available_scenes_for_update: Array = ["Shop", "CoopShop", "Main"]
-	var upper_hbox: UpperHBox = .get_node("UpperHBox")
+	var upper_hbox = .get_node("UpperHBox")
 	
 	if _sort_popup != null:
 		_sort_popup.hide()
 	
 	if upper_hbox != null:
 		var sort_options_button: MyMenuButton = upper_hbox._sort_options_button
-		if get_tree().get_current_scene().get_name() in available_scenes_for_update and self.name == "ItemsContainer" and sort_options_button != null:
+		if get_tree().get_current_scene().get_name() in available_scenes_for_update and sort_options_button != null:
 			if is_enough_items(self) and get_pause() == null:
 				sort_options_button.visible = true
 			else:
@@ -104,13 +111,13 @@ func get_pause():
 		else:
 			return null
 	
-func set_h_box() -> UpperHBox:
+func set_h_box():
 	var old_label: Label = .get_node("Label")
 
-	var upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
+	var upper_hbox = mod_upper_hbox
 	.remove_child(old_label)
 	.add_child(upper_hbox)
-
+	
 	_label = upper_hbox._label
 
 	while upper_hbox.get_position_in_parent() > 0:

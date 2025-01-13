@@ -47,11 +47,10 @@ func install_script_extensions() -> void:
 	for extension in extensions:
 		ModLoaderMod.install_script_extension(extensions_dir_path.plus_file(extension))
 
-	var scenes = [
-		
-	]
-	for scene in scenes:
-		self.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/" + scene).instance())
+	# var scenes = [
+	# ]
+	# for scene in scenes:
+	# 	self.add_child(load("res://mods-unpacked/RobocrafterLP-BetterDisplay/" + scene).instance())
 
 func add_translations() -> void:
 	translations_dir_path = mod_dir_path.plus_file("translations")

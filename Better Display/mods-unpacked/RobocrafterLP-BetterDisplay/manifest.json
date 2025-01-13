@@ -1,8 +1,8 @@
 {
 	"name": "BetterDisplay",
 	"namespace": "RobocrafterLP",
-	"version_number": "1.2.0",
-	"description": "",
+	"version_number": "1.2.1",
+	"description": "Improves and adds various indicators",
 	"website_url": "",
 	"dependencies": ["dami-ModOptions"],
 	"extra": {
