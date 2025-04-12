@@ -41,7 +41,7 @@ func _ready():
 		var shop = get_shop()
 		if !shop:
 			return
-		var parent = shop.get_node("Content")
+		var parent: Control = shop.get_node("Content")
 		
 		_sort_options_button = set_h_box()._sort_options_button
 		var _err2 = _sort_options_button.connect("pressed", self, "_on_sort_options_button_pressed")
@@ -51,20 +51,29 @@ func _ready():
 		sort_by_default() # Idk why, but if you don't do this and you press "Cancel" in popup, you get crash :\
 		
 		if parent != null:
-			parent.add_child(mod_sort_popup)
-			_sort_popup = parent.get_node("SortPopup") # TODO: "Parent are busy" error!
-			_sort_popup.hide()
-		
-			var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
+			call_deferred("on_after_ready", parent)
+
+func on_after_ready(parent):
+	if parent.get_node_or_null("SortPopup") == null:
+		parent.add_child(mod_sort_popup)
+	
+	_sort_popup = parent.get_node_or_null("SortPopup")
+	_sort_popup.hide()
+
+	var _err = _sort_popup.connect("sort_by", self, "_on_sort_by")
 
 func _on_Elements_elements_changed():
 	._on_Elements_elements_changed()
 
 	if self.name != "ItemsContainer":
 		return
-
+	
+	# Cheking if this is a CoopResume scene, to prevent adding "UpperHBox"
+	if "CoopResume" in str(.get_tree().get_current_scene().get_path()):
+		return
+	
 	var available_scenes_for_update: Array = ["Shop", "CoopShop", "Main"]
-	var upper_hbox = .get_node("UpperHBox")
+	var upper_hbox = .get_node_or_null("UpperHBox")
 	
 	if _sort_popup != null:
 		_sort_popup.hide()

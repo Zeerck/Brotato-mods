@@ -3,10 +3,6 @@ extends PauseMenu
 onready var mod_sort_popup = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/sort_popup.tscn").instance()
 onready var mod_upper_hbox = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/menus/pages/upper_hbox.tscn").instance()
 
-# This is the third copy of the same code for sort_menu...
-# We need something better that just "copying" the code.
-# I need a little research of godot script
-
 var available_scenes: Array = ["Shop", "CoopShop", "Main"]
 var _sort_options_button: MyMenuButton
 var _sort_popup
@@ -47,7 +43,7 @@ func is_available_scene() -> bool:
 	return false
 
 func set_h_box(container):
-	var upper_hbox = container.get_node("UpperHBox")
+	var upper_hbox = container.get_node_or_null("UpperHBox")
 	
 	if upper_hbox != null:
 		return upper_hbox
