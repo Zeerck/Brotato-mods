@@ -98,7 +98,7 @@ func set_h_box():
 	_items_container.remove_child(old_label)
 	_items_container.add_child(mod_upper_hbox)
 	
-	var upper_hbox = _items_container.get_node("UpperHBox")
+	var upper_hbox = _items_container.get_node_or_null("UpperHBox")
 	
 	_items_container._label = upper_hbox._label
 	

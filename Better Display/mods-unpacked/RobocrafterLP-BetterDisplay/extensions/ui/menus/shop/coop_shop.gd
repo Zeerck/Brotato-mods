@@ -2,7 +2,6 @@ extends CoopShop
 
 onready var mod_material_ui = load("res://mods-unpacked/RobocrafterLP-BetterDisplay/extensions/ui/hud/material_ui.png")
 onready var base_material_ui = load("res://items/materials/material_ui.png")
-onready var base_ui_progress_bar = load("res://ui/hud/ui_progress_bar.tscn").instance()
 
 func get_xp_string(player: int) -> String:
 	return str("XP.%s/%s | LV.%s" % [
@@ -18,7 +17,7 @@ func get_ui_gold_icon() -> Resource:
 	return base_material_ui
 	
 func new_xp_bar(player: int) -> UIProgressBar:
-	var bar = base_ui_progress_bar
+	var bar = load("res://ui/hud/ui_progress_bar.tscn").instance()
 	var label = Label.new()
 	label.set("custom_fonts/font", preload("res://resources/fonts/actual/base/font_26_outline.tres"))
 	label.text = get_xp_string(player)
